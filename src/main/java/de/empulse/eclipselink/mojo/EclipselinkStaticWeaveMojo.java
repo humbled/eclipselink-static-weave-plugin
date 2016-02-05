@@ -16,27 +16,25 @@ package de.empulse.eclipselink.mojo;
  * limitations under the License.
  */
 
+import org.apache.maven.artifact.Artifact;
+import org.apache.maven.plugin.AbstractMojo;
+import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.plugins.annotations.*;
+import org.apache.maven.project.MavenProject;
+import org.eclipse.persistence.logging.AbstractSessionLog;
+import org.eclipse.persistence.logging.SessionLog;
+import org.eclipse.persistence.tools.weaving.jpa.StaticWeaveProcessor;
+
+import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-
-import org.apache.maven.artifact.Artifact;
-import org.apache.maven.plugin.AbstractMojo;
-import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.plugins.annotations.Component;
-import org.apache.maven.plugins.annotations.LifecyclePhase;
-import org.apache.maven.plugins.annotations.Mojo;
-import org.apache.maven.plugins.annotations.Parameter;
-import org.apache.maven.plugins.annotations.ResolutionScope;
-import org.apache.maven.project.MavenProject;
-import org.eclipse.persistence.logging.AbstractSessionLog;
-import org.eclipse.persistence.logging.SessionLog;
-import org.eclipse.persistence.tools.weaving.jpa.StaticWeaveProcessor;
 
 /**
  * Plugin which performs Eclipselink static weaving. Use the weave goal to
@@ -74,7 +72,7 @@ import org.eclipse.persistence.tools.weaving.jpa.StaticWeaveProcessor;
  * 				&lt;dependencies&gt;
  * 					&lt;dependency&gt;
  * 						&lt;groupId&gt;org.eclipse.persistence&lt;/groupId&gt;
- * 						&lt;artifactId&gt;org.eclipse.persistence.jpa&lt;/artifactId&gt;
+ * 						&lt;artifactId&gt;eclipselink&lt;/artifactId&gt;
  * 						&lt;version&gt;${eclipselink.version}&lt;/version&gt;
  * 					&lt;/dependency&gt;
  * 				&lt;/dependencies&gt;
@@ -154,7 +152,7 @@ public class EclipselinkStaticWeaveMojo extends AbstractMojo {
 	 * The Maven project to have environment information like the classpath.
 	 * This property is set by maven.
 	 */
-	@Component
+    @Parameter(defaultValue = "${project}", readonly = true)
 	private MavenProject project;
 
 	/**
@@ -178,7 +176,16 @@ public class EclipselinkStaticWeaveMojo extends AbstractMojo {
 				weave.setClassLoader(classLoader);
 			}
 			if (persistenceXMLLocation != null) {
-				weave.setPersistenceXMLLocation(persistenceXMLLocation);
+                File pxml = Paths.get(target, persistenceXMLLocation).toFile();
+                if(!pxml.exists()) {
+                    getLog().error("Persistence XML file '" + pxml + "' does not exist");
+                }
+                else if(!pxml.canRead()) {
+                    getLog().error("Persistence XML file '" + pxml + "' is not accessible");
+                }
+                else {
+                    weave.setPersistenceXMLLocation(persistenceXMLLocation);
+                }
 			}
 			weave.setLog(new LogWriter(getLog()));
 			weave.setLogLevel(getLogLevel());
@@ -225,7 +232,7 @@ public class EclipselinkStaticWeaveMojo extends AbstractMojo {
 	 * @throws MalformedURLException
 	 */
 	private List<URL> buildClassPath() throws MalformedURLException {
-		List<URL> urls = new ArrayList<URL>();
+		List<URL> urls = new ArrayList<>();
 
 		if (project == null) {
 
@@ -233,7 +240,7 @@ public class EclipselinkStaticWeaveMojo extends AbstractMojo {
 					"MavenProject is empty, unable to build ClassPath. No Models can be woven.");
 
 		} else {
-			Set<Artifact> artifacts = (Set<Artifact>) project.getArtifacts();
+			Set<Artifact> artifacts = project.getArtifacts();
 			for (Artifact a : artifacts) {
 				urls.add(a.getFile().toURI().toURL());
 			}

@@ -32,7 +32,7 @@ Do not forget to add EclipseLink as dependency, otherwise the EclipseLink Static
  				<dependencies>
  					<dependency>
  						<groupId>org.eclipse.persistence</groupId>
- 						<artifactId>org.eclipse.persistence.jpa</artifactId>
+ 						<artifactId>eclipselink</artifactId>
  						<version>${eclipselink.version}</version>
  					</dependency>
  				</dependencies>
