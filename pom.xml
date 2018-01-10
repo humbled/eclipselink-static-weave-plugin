@@ -13,13 +13,13 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<java.version>1.7</java.version>
-		<eclipselink.version>2.6.2</eclipselink.version>
+		<java.version>1.8</java.version>
+		<eclipselink.version>2.6.5</eclipselink.version>
 	</properties>
 
 	<description>Maven Plugin for static weaving with EclipseLink.
 
-Compatible with Java 7 + 8 and Maven 3.x.</description>
+Compatible with Java 8 and Maven 3.x.</description>
 
 
 	<scm>
