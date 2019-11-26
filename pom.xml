@@ -23,12 +23,12 @@ Compatible with Java 8 and Maven 3.x.</description>
 
 
 	<scm>
-		<connection>scm:git:git@github.com:empulse-gmbh/eclipselink-static-weave-plugin.git</connection>
-		<url>https://github.com/empulse-gmbh/eclipselink-static-weave-plugin</url>
-		<developerConnection>scm:git:git@github.com:empulse-gmbh/eclipselink-static-weave-plugin.git</developerConnection>
+		<connection>scm:git:git@github.com:humbled/eclipselink-static-weave-plugin.git</connection>
+		<url>https://github.com/humbled/eclipselink-static-weave-plugin</url>
+		<developerConnection>scm:git:git@github.com:humbled/eclipselink-static-weave-plugin.git</developerConnection>
 	</scm>
 	<issueManagement>
-		<url>https://github.com/empulse-gmbh/eclipselink-static-weave-plugin/issues</url>
+		<url>https://github.com/humbled/eclipselink-static-weave-plugin/issues</url>
 	</issueManagement>
 
 	<licenses>
@@ -122,6 +122,7 @@ Compatible with Java 8 and Maven 3.x.</description>
 					</execution>
 				</executions>
 			</plugin>
+<!-- uncomment for javadocs
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
@@ -135,6 +136,7 @@ Compatible with Java 8 and Maven 3.x.</description>
 					</execution>
 				</executions>
 			</plugin>
+-->
 			<!-- uncomment to sign
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
