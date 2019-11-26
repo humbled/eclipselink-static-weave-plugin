@@ -17,7 +17,7 @@ public class LogWriter extends StringWriter {
 
 	private Log log;
 
-	private final String LINEBREAK = "\r\n";
+	private final String LINEBREAK = System.getProperty("line.separator");
 
 	private StringBuilder logLineBuilder = new StringBuilder();
 
