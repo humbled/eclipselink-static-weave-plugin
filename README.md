@@ -1,3 +1,7 @@
+# This _humbled_ fork
+
+**Supports Mac/Unix newlines**
+
 # Introduction
 Plugin which performs Eclipselink static weaving. Use the weave goal to execute. 
 
